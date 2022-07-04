@@ -5,14 +5,11 @@ import android.widget.TextView;
 
 import com.orhanobut.hawk.Hawk;
 import com.pj567.movie.R;
-import com.pj567.movie.api.ApiConfig;
 import com.pj567.movie.base.BaseLazyFragment;
-import com.pj567.movie.bean.PraseBean;
 import com.pj567.movie.ui.dialog.ChangePlayDialog;
 import com.pj567.movie.ui.dialog.LiveSourceDialog;
 import com.pj567.movie.ui.dialog.ModelDialog;
 import com.pj567.movie.ui.dialog.PasswordDialog;
-import com.pj567.movie.ui.dialog.PraseDialog;
 import com.pj567.movie.util.FastClickCheckUtil;
 import com.pj567.movie.util.HawkConfig;
 import com.tv.player.PlayerConfig;
@@ -23,7 +20,6 @@ import com.tv.player.exo.ExoMediaPlayerFactory;
 import com.tv.player.ijk.IjkPlayerFactory;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 /**
  * @author pj567
@@ -118,9 +114,9 @@ public class ModelSettingFragment extends BaseLazyFragment {
                     public void onChange() {
                         int playType = Hawk.get(HawkConfig.PLAY_TYPE, 0);
                         PlayerConfig config = VideoViewManager.getConfig();
-                        try {
-                            Field mPlayerFactoryField = config.getClass().getDeclaredField("mPlayerFactory");
-                            mPlayerFactoryField.setAccessible(true);
+//                        try {
+//                            Field mPlayerFactoryField = config.getClass().getDeclaredField("mPlayerFactory");
+//                            mPlayerFactoryField.setAccessible(true);
                             PlayerFactory playerFactory = null;
                             switch (playType) {
                                 case 0:
@@ -137,10 +133,11 @@ public class ModelSettingFragment extends BaseLazyFragment {
                                     playerFactory = ExoMediaPlayerFactory.create();
                                     break;
                             }
-                            mPlayerFactoryField.set(config, playerFactory);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        config.mPlayerFactory = playerFactory;
+//                            mPlayerFactoryField.set(config, playerFactory);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 }).build(mContext).show();
             }
